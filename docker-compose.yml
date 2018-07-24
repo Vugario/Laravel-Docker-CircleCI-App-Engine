@@ -1,51 +1,28 @@
 version: '2'
 services:
 
-  blog-app:
+  # Application
+  laravel-app:
     image: gcr.io/google-appengine/php:latest
     environment:
-      - DOCUMENT_ROOT=/app/public
-      - SKIP_LOCKDOWN_DOCUMENT_ROOT=true
+      - "DOCUMENT_ROOT=/app/public"
+      - "SKIP_LOCKDOWN_DOCUMENT_ROOT=true"
+      - "DB_DATABASE=homestead"
+      - "DB_USERNAME=homestead"
+      - "DB_PASSWORD=secret"
     volumes:
       - ./:/app
     ports:
-      - 80:8080
+      - "80:8080"
 
-#   # The Application
-#   transport_app:
-#     build:
-#       context: ./
-#       dockerfile: docker/app.dockerfile
-#     working_dir: /var/www
-#     volumes:
-#       - ./:/var/www
-#     environment:
-#       - "DB_PORT=3306"
-#       - "DB_HOST=transport_database"
-
-#   # The Web Server
-#   transport_web:
-#     build:
-#       context: ./
-#       dockerfile: docker/web.dockerfile
-#     working_dir: /var/www
-#     volumes_from:
-#       - transport_app
-#     ports:
-#       - 9000:80
-
-#   # The Database
-#   transport_database:
-#     image: mysql:5.6
-#     volumes:
-#       - transport_dbdata:/var/lib/mysql
-#     environment:
-#       - "MYSQL_DATABASE=homestead"
-#       - "MYSQL_USER=homestead"
-#       - "MYSQL_PASSWORD=secret"
-#       - "MYSQL_ROOT_PASSWORD=secret"
-#     ports:
-#         - "33061:3306"
-
-# volumes:
-#   transport_dbdata:
+  # Database
+  laravel-db:
+    image: mysql:5.6
+    environment:
+      - "MYSQL_DATABASE=homestead"
+      - "MYSQL_HOST=172.26.1.0"
+      - "MYSQL_USER=homestead"
+      - "MYSQL_PASSWORD=secret"
+      - "MYSQL_ROOT_PASSWORD=secret"
+    ports:
+      - "3306"
